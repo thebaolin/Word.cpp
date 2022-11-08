@@ -1,4 +1,5 @@
-  //CS135
+ //Baolin Chang
+    //CS135
     //Project 2 Task B
     #include <iostream>
     #include <fstream>
@@ -174,7 +175,7 @@
         if(body_align == "right")
             newstring += addSpaces(words_list, width) + words_list + '\n';
         if(body_align ==  "center"){
-            newstring += HalfSpaces(words_list, width) + words_list + HalfSpaces(words_list, width) + '\n';
+            newstring += HalfSpaces(words_list, width) + words_list + HalfSpaces(words_list, width);
         }
 
         //remove all esc chars at end of newstring
@@ -183,6 +184,6 @@
         }
         //cout<<lineCount<<endl;
         outfile<<newstring;
-        if(inputLineCount == 12)
-            outfile << endl;        
+        // if(inputLineCount == 12)
+        //     outfile << endl;        
     } 
