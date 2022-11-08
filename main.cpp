@@ -136,6 +136,7 @@
                 while(getline(ss, word, ' ')){
                     // cout << temp_width << " " << word.length() + 1 << endl;
                     int difference = temp_width - (word.length() + 1); 
+                    
                     // cout << "difference: " << difference << endl;
                     if(difference >= 0){
                         // cout<<"words list: "<<words_list<<endl;
@@ -143,7 +144,7 @@
                             words_list = word;
                         }
                         else
-                            words_list += ' ' + word ;
+                            words_list += " " + word ;
                         // cout << words_list << endl;
                         // cout<<"words list after: "<<words_list<<endl;
                         temp_width = temp_width - (word.length() + 1);
@@ -182,8 +183,14 @@
         while(newstring[newstring.length()-1] == '\n'){
         newstring = newstring.substr(0, newstring.length()-1);
         }
+        for(int i = 1; i < newstring.length()-1;i++){
+            if(newstring[i] == ' ' && newstring[i-1] == ' '){
+                newstring = newstring.substr(0,i) + newstring.substr(i+1,newstring.length());
+            }
+        }
         //cout<<lineCount<<endl;
         outfile<<newstring;
+        cout<<newstring;
         // if(inputLineCount == 12)
         //     outfile << endl;        
     } 

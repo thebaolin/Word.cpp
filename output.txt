@@ -17,7 +17,7 @@ Malorum (The Extremes of Good and Evil)
   line in section 1.10.32. The standard
     chunk of Lorem Ipsum used since the
     1500s is reproduced below for those
-  interested. Sections 1.10.32 and 1.10 
+  interested. Sections 1.10.32 and 1.10
  by Cicero are also reproduced in their
     exact original form, accompanied by
          English versions from the 1914
