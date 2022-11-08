@@ -1,7 +1,6 @@
 //Baolin Chang
 //CS135
 //Project 2 Task B
-
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -28,7 +27,8 @@ string addSpaces(string s, int width){
 string HalfSpaces(string s, int width){
     string halfspaces;
 
-    for(int i = 0; i < ((width - s.length()) / 2) - 1; i++){
+    int length = (int)(.5 * (width - s.length()) + 0.5);
+    for(int i = 0; i < length - 1; i++){
         halfspaces += " ";
     }
 
@@ -39,7 +39,8 @@ string HalfSpaces(string s, int width){
 //center body doesnt work
 int main()
 {
-    string string_width, string_outfile, words, header_align, body_align;
+    string string_width, string_outfile, words; 
+    string header_align, body_align;
     bool no_alignment = false;
     string filename =  "input.txt";
     //cout << "Enter the Input Filename: ";
@@ -51,18 +52,20 @@ int main()
     int width = stoi(string_width);
 
     getline(infile, body_align, ';');
-    string temp_body = body_align;
+    //string temp_body = body_align;
+    //string body_align = temp_body;
 
-    if(temp_body != "left" || temp_body != "right" || temp_body != "center")
-        no_alignment = true;
+    // if(temp_body != "left" || temp_body != "right" || temp_body != "center")
+    //     no_alignment = true;
 
     getline(infile, header_align, ';');
-    string temp_align = header_align;
+    //string header_align = temp_header;
+    // string temp_align = header_align;
 
-    if(temp_align != "left" || temp_align != "right" || temp_align != "center")
-        if(no_alignment)
-            body_align = "left";
-        header_align = body_align;
+    // if(temp_align != "left" || temp_align != "right" || temp_align != "center")
+    //     if(no_alignment)
+    //         body_align = "left";
+    //     header_align = body_align;
 
     getline(infile, string_outfile, ';');
     ofstream outfile;
@@ -161,10 +164,18 @@ int main()
             }
         }
     }
-    newstring += words_list;
+    if(body_align == "left")
+        newstring += words_list + addSpaces(words_list, width) + '\n';
+    if(body_align == "right")
+        newstring += addSpaces(words_list, width) + words_list + '\n';
+    if(body_align ==  "center")
+        newstring += HalfSpaces(words_list, width) + words_list + HalfSpaces(words_list, width) + '\n';
+    //newstring += words_list;
+    //newstring = newstring.substr(0,)
     //remove all esc chars at end of newstring
     while(newstring[newstring.length()-1] == '\n' || newstring[newstring.length()-1] == ' '){
       newstring = newstring.substr(0, newstring.length()-1);
     }
     outfile<<newstring;
+    cout<<newstring;
 }
