@@ -1,4 +1,4 @@
-    //Baolin Chang
+        //Baolin Chang
         //CS135
         //Project 2 Task B
         #include <iostream>
@@ -8,8 +8,6 @@
 
         string addSpaces(string s, int width);
         string HalfSpaces(string s, int width);
-        void align_Header(string header_align, string line, string newstring);
-        void align_Body(string body_align, string s, string newstring);
 
         //for left and right alignment
         string addSpaces(string s, int width){
@@ -33,34 +31,19 @@
 
             return halfspaces;
         }
-        
-        void align_Header(string header_align, string line, string &newstring, int width){
-            if(header_align == "right")
-                newstring += addSpaces(line,width) + line + '\n';
-            else if(header_align == "left")
-                newstring += line + addSpaces(line,width) + '\n';
-            else if(header_align == "center")
-                newstring += HalfSpaces(line,width) + line + HalfSpaces(line,width) + '\n';
-        }
-
-        void align_Body(string body_align, string s, string &newstring, int width){
-            if(body_align == "left")
-                newstring += s + addSpaces(s, width) + '\n';
-            else if(body_align == "right")
-                newstring += addSpaces(s, width) + s + '\n';
-            else   
-                newstring += HalfSpaces(s, width) + s + HalfSpaces(s, width) + '\n';
-        }
 
         int main()
         {
-            string string_width, string_outfile, words, header_align, body_align; 
-            string filename = "input3.txt";
-            bool printed = false;
-            // cout << "Enter the Input Filename: ";
-            // cin >> filename;
+            string string_width, string_outfile, words; 
+            string header_align, body_align;
+            bool no_alignment = false;
+            string filename;
+            cout << "Enter the Input Filename: ";
+            cin >> filename;
 
             ifstream infile;
+            ifstream infile2;
+            infile2.open(filename);
             infile.open(filename);
             getline(infile, string_width, ';');
             int width = stoi(string_width);
@@ -88,16 +71,29 @@
             bool endLine = false;
             int lineCount = 0;
             bool isTitle = false;
-            bool dontPrint = false;
             string dummyLine;
+            int inputLineCount = 0;
+            while(getline(infile2,dummyLine)){
+                inputLineCount++;
+            }
+            if(dummyLine.length() == 0)
+                inputLineCount++;
 
             while (getline(infile, line)){
+                //for aligning titles
+                lineCount++;
+                //cout<<line<<endl;
 
                 if(isupper(line[0]) && isupper(line[1])){
                     isTitle = true;
                     if(isTitle){
                         isTitle = false;
-                        align_Header(header_align, line, newstring, width);
+                        if(header_align == "right")
+                            newstring += addSpaces(line,width) + line + '\n';
+                        else if(header_align == "left")
+                            newstring += line + addSpaces(line,width) + '\n';
+                        else if(header_align == "center")
+                            newstring += HalfSpaces(line,width) + line + HalfSpaces(line,width) + '\n';
                     }
                     continue;
                 }
@@ -105,21 +101,34 @@
                 if(line.length() == 0){
                     //add remaining words_list string before breaking new line
                     if (words_list.length() != 0){ 
-                        align_Body(body_align, words_list, newstring, width);
-                        //reset words_list
-                        words_list = "";
-                        temp_width = width;
-                        }
-                    newstring += '\n';
-                }
 
+                        if(body_align == "left")
+                            newstring += words_list + addSpaces(words_list, width) + '\n';
+                        else if(body_align == "right")
+                            newstring += addSpaces(words_list, width) + words_list + '\n';
+                        else   
+                            newstring += HalfSpaces(words_list, width) + words_list + HalfSpaces(words_list, width) + '\n';
+                    
+                    //reset words_list
+                    words_list = "";
+                    temp_width = width;
+                    }
+
+                    newstring += '\n';
+
+                }
                 // line is shorter than width, so print it out
                 else if(words_list.length() + line.length() + 1 < width ){
-                    align_Body(body_align, words_list + line, newstring, width);
+                        if(body_align == "left")
+                            newstring += words_list+ line + addSpaces(words_list + line, width) + '\n';
+                        else if(body_align == "right")
+                            newstring += addSpaces(words_list + line, width) + words_list + line + '\n';
+                        else   
+                            newstring += HalfSpaces(words_list + line, width) + words_list + line + HalfSpaces(words_list + line, width) + '\n';
+
                     words_list = "";
                     temp_width = width;
                 }
-
                 else if(words_list.length() + line.length() + 1 >= width){
                     stringstream ss(line);
                     string word;
@@ -141,7 +150,13 @@
                             temp_width = temp_width - (word.length() + 1);
                         }
                         else{
-                            align_Body(body_align, words_list, newstring, width);
+
+                            if(body_align == "left")
+                                newstring += words_list + addSpaces(words_list, width) + '\n';
+                            else if(body_align == "right")
+                                newstring += addSpaces(words_list, width) + words_list + '\n';
+                            else
+                                newstring += HalfSpaces(words_list, width) + words_list + HalfSpaces(words_list, width) + '\n';
                             //newstring = newstring.substr(0,newstring.length() - 1);
                             temp_width = width - (word.length() + 1);
                             words_list = word;
@@ -150,16 +165,9 @@
                     }
                 }
 
-                
-                if(infile.eof() && line.length() == 0){
-                    newstring += '\n';
-                    printed = true;
-                }
-                if(infile.eof())
-                    dontPrint = true;
             }
 
-            if(!dontPrint){
+            if(words_list.length() > 0){
                 if(body_align == "left")
                 newstring += words_list + addSpaces(words_list, width);
                 if(body_align == "right")
@@ -168,13 +176,28 @@
                     newstring += HalfSpaces(words_list, width) + words_list + HalfSpaces(words_list, width);
                 }
             }
-
-            // //remove all esc chars at end of newstring
-
-                while(newstring[newstring.length()-1] == '\n'){
-                    newstring = newstring.substr(0, newstring.length()-1);
-            }
             
-            outfile<<newstring;
-            cout<<newstring;
+
+            //remove all esc chars at end of newstring
+            while(newstring[newstring.length()-1] == '\n'){
+            newstring = newstring.substr(0, newstring.length()-1);
+            }
+            for(int i = 0; i < newstring.length()-1 && i % width == 0; i++){
+                if(newstring[i] == ' ' && newstring[i-1] == ' '){
+                    newstring = newstring.substr(0,i) + newstring.substr(i+1,newstring.length());
+                }
+            }
+            stringstream stream(newstring);
+            string stringline, newnewstring;
+            while(getline(stream,stringline)){
+                 newnewstring += stringline.substr(0,width - 1) + '\n';
+            }
+
+            newnewstring = newnewstring.substr(0,newnewstring.length() - 1);    
+
+            
+            outfile<<newnewstring;
+            cout<<newnewstring;
+            // if(inputLineCount == 12)
+            //     outfile << endl;        
         } 
