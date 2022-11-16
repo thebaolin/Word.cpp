@@ -56,6 +56,20 @@
             getline(infile, header_align, ';');
                 if(header_align.length() == 0)
                     header_align = body_align;
+            
+
+            string string_to_fill, string_double_spaced;
+            bool to_fill, double_spaced;
+            getline(infile,string_to_fill,';');
+                if(string_to_fill == "true")
+                    to_fill = true;
+                else
+                    to_fill = false;
+            getline(infile, string_double_spaced, ';');
+                if(string_double_spaced == "true")
+                    double_spaced = true;
+                else
+                    double_spaced = false;
 
             getline(infile, string_outfile, ';');
             ofstream outfile;
@@ -80,9 +94,6 @@
                 inputLineCount++;
 
             while (getline(infile, line)){
-                //for aligning titles
-                lineCount++;
-                //cout<<line<<endl;
 
                 if(isupper(line[0]) && isupper(line[1])){
                     isTitle = true;
@@ -198,6 +209,5 @@
             
             outfile<<newnewstring;
             cout<<newnewstring;
-            // if(inputLineCount == 12)
-            //     outfile << endl;        
+       
         } 
