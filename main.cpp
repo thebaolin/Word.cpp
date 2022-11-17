@@ -78,7 +78,7 @@ void align_Body(string body_align, string s, string &newstring, int width, bool 
 int main()
 {
     string string_width, string_outfile, words, header_align, body_align; 
-    string filename = "input3.txt";
+    string filename = "input1.txt";
     bool printed = false;
     // cout << "Enter the Input Filename: ";
     // cin >> filename;
@@ -138,11 +138,12 @@ int main()
             }
             continue;
         }
-
+//if you don't have to fill, do default
+    if(!to_fill){
         if(line.length() == 0){
             //add remaining words_list string before breaking new line
             if (words_list.length() != 0){ 
-                align_Body(body_align, words_list, newstring, width);
+                align_Body(body_align, words_list, newstring, width, double_spaced);
                 //reset words_list
                 words_list = "";
                 temp_width = width;
@@ -152,23 +153,14 @@ int main()
 
         // line is shorter than width, so print it out
         else if(words_list.length() + line.length() + 1 < width ){
-            align_Body(body_align, words_list + line, newstring, width);
+            align_Body(body_align, words_list + line, newstring, width, double_spaced);
             words_list = "";
             temp_width = width;
         }
 
         else if(words_list.length() + line.length() + 1 >= width){
-            int charcount = 0;
-            for(int i = 0; i <  line.length(); i++){
-                // width - 1 to account for the ' character
-                while(charcount < width - 1){
-                    newstring += line[i];
-                    charcount++;
-                }
-                newstring += '-' + '\n';
-                charcount = 0;
+        
 
-            }
             stringstream ss(line);
             string word;
 
@@ -186,7 +178,7 @@ int main()
                     temp_width = temp_width - (word.length() + 1);
                 }
                 else{
-                    align_Body(body_align, words_list, newstring, width);
+                    align_Body(body_align, words_list, newstring, width, double_spaced);
 
                     temp_width = width - (word.length() + 1);
                     words_list = word;
@@ -195,8 +187,37 @@ int main()
             }
         }
     }
+        //to_fill
+    if(to_fill){
+        int charcount = 0;
+            for(int i = 0; i < line.length(); i++){
+                if(charcount < width - 1){
+                    newstring += line[i];
+                    charcount++;
+                    cout<<"hi im here"<<endl;
+                }
+                else{
+                    newstring += "BEEWB" + '\n';
+                    charcount = 0;
+                    cout<<"hello";
+                }
+            }
+        }
+    }
+
+
+
+    /*
+    have a for loop that loops through the length of each line
+        take in each char one by one, and increase charcount. 
+        if charcount < width - 1, add a dash and skip to the next line
+        continuing on from line[charcount] 
+    */
 
     if(words_list.length() > 0){
+        if(double_spaced){
+            newstring += '\n';
+        }
         if(body_align == "left")
         newstring += words_list + addSpaces(words_list, width);
         if(body_align == "right")
