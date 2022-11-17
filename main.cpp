@@ -8,8 +8,8 @@ using namespace std;
 
 string addSpaces(string s, int width);
 string HalfSpaces(string s, int width);
-void align_Header(string header_align, string line, string newstring, bool double_spaced);
-void align_Body(string body_align, string s, string newstring, bool double_spaced);
+void align_Header(string header_align, string line, string &newstring, bool double_spaced);
+void align_Body(string body_align, string s, string &newstring, int width, bool double_spaced);
 
 //for left and right alignment
 string addSpaces(string s, int width){
@@ -189,15 +189,18 @@ int main()
     }
         //to_fill
     if(to_fill){
+        string tempstring;
         int charcount = 0;
             for(int i = 0; i < line.length(); i++){
                 if(charcount < width - 1){
-                    newstring += line[i];
+                    tempstring += line[i];
+                    align_Body(body_align, tempstring, newstring, width, double_spaced);
                     charcount++;
-                    cout<<"hi im here"<<endl;
+                    //newstring += line[i];
+                    //cout<<"hi im here"<<endl;
                 }
                 else{
-                    newstring += "BEEWB" + '\n';
+                    newstring += "-" + '\n';
                     charcount = 0;
                     cout<<"hello";
                 }
