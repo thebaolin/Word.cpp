@@ -1,6 +1,6 @@
 //Baolin Chang
 //CS135
-//Project 2 Task B
+//Project 2 Task C
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -9,7 +9,7 @@ using namespace std;
 string addSpaces(string s, int width);
 string HalfSpaces(string s, int width);
 void align_Header(string header_align, string line, string newstring, bool double_spaced);
-void align_Body(string body_align, string s, string newstring);
+void align_Body(string body_align, string s, string newstring, bool double_spaced);
 
 //for left and right alignment
 string addSpaces(string s, int width){
@@ -56,13 +56,23 @@ void align_Header(string header_align, string line, string &newstring, int width
     
 }
 
-void align_Body(string body_align, string s, string &newstring, int width){
-    if(body_align == "left")
-        newstring += s + addSpaces(s, width) + '\n';
-    else if(body_align == "right")
-        newstring += addSpaces(s, width) + s + '\n';
-    else   
-        newstring += HalfSpaces(s, width) + s + HalfSpaces(s, width) + '\n';
+void align_Body(string body_align, string s, string &newstring, int width, bool double_spaced){
+    if(double_spaced){
+        if(body_align == "left")
+            newstring += '\n' + s + addSpaces(s, width) + '\n';
+        else if(body_align == "right")
+            newstring += '\n' + addSpaces(s, width) + s + '\n';
+        else   
+            newstring += '\n' + HalfSpaces(s, width) + s + HalfSpaces(s, width) + '\n';
+    }
+    else{
+        if(body_align == "left")
+            newstring += s + addSpaces(s, width) + '\n';
+        else if(body_align == "right")
+            newstring += addSpaces(s, width) + s + '\n';
+        else   
+            newstring += HalfSpaces(s, width) + s + HalfSpaces(s, width) + '\n';
+    }
 }
 
 int main()
