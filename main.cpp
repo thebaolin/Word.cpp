@@ -78,7 +78,7 @@ void align_Body(string body_align, string s, string &newstring, int width, bool 
 int main()
 {
     string string_width, string_outfile, words, header_align, body_align; 
-    string filename = "input1.txt";
+    string filename = "input.txt";
     bool printed = false;
     // cout << "Enter the Input Filename: ";
     // cin >> filename;
@@ -105,12 +105,13 @@ int main()
             to_fill = true;
         else
             to_fill = false;
+        //cout<<"to_fill: "<<to_fill<<endl;
     getline(infile, string_double_spaced, ';');
         if(string_double_spaced == "true")
             double_spaced = true;
         else
             double_spaced = false;
-
+        //cout<<"double_spaced: "<<double_spaced<<endl;
     getline(infile, string_outfile, ';');
     ofstream outfile;
     outfile.open(string_outfile);
@@ -129,8 +130,10 @@ int main()
     string dummyLine;
 
     while (getline(infile, line)){
+        //cout<<line<<endl;
         //if line is a title
         if(isupper(line[0]) && isupper(line[1])){
+            cout<<"hi im a title"<<endl;
             isTitle = true;
             if(isTitle){
                 isTitle = false;
@@ -160,7 +163,6 @@ int main()
 
         else if(words_list.length() + line.length() + 1 >= width){
         
-
             stringstream ss(line);
             string word;
 
@@ -189,6 +191,13 @@ int main()
     }
         //to_fill
     if(to_fill){
+        //confused as to why it only iterates once? for input.txt
+        //update: it only bugs out when double_spaced is true. if its false, it works fine
+        if(line.length() == 0){
+            newstring += '\n';
+            continue;
+        }
+        cout<<"hi i make it to fill"<<endl;
         string tempstring;
         int charcount = 0;
             for(int i = 0; i < line.length(); i++){
@@ -197,24 +206,18 @@ int main()
                     align_Body(body_align, tempstring, newstring, width, double_spaced);
                     charcount++;
                     //newstring += line[i];
-                    //cout<<"hi im here"<<endl;
                 }
                 else{
                     newstring += "-" + '\n';
                     charcount = 0;
-                    cout<<"hello";
                 }
             }
         }
     }
-
-
-
     /*
     have a for loop that loops through the length of each line
         take in each char one by one, and increase charcount. 
         if charcount < width - 1, add a dash and skip to the next line
-        continuing on from line[charcount] 
     */
 
     if(words_list.length() > 0){

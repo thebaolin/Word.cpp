@@ -1,4 +1,4 @@
-60;left;left;true;true;output.txt;
+60;left;left;false;true;output.txt;
 TEXT GENERATOR
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac egestas nisi. Nulla in convallis sapien, vel sodales ipsum.
